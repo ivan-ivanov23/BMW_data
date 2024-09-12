@@ -1,12 +1,14 @@
 import sys
 
 from PyQt6.QtCore import QSize, Qt
-from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QLabel
+from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QLabel, QWidget
 
 # Subclass QMainWindow to customize your application's main window
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+
+        self.setWindowTitle("BMW Data")
 
         # Set fixed size
         self.setFixedSize(400, 300)
@@ -19,8 +21,6 @@ class MainWindow(QMainWindow):
         title = QLabel("BMW Data")
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-
-        self.setWindowTitle("BMW Data")
         button = QPushButton("Press Me!")
         button.setFixedSize(100, 50)
 
@@ -28,10 +28,10 @@ class MainWindow(QMainWindow):
         self.main_layout.addWidget(title)
         self.main_layout.addWidget(button)
 
-        # Create a central widget
-        self.central_widget = QLabel()
-        self.central_widget.setLayout(self.main_layout)
-        self.setCentralWidget(self.central_widget)
+        # Create a central widget to set the main layout on it
+        central_widget = QWidget()
+        central_widget.setLayout(self.main_layout)
+        self.setCentralWidget(central_widget)
 
         # Connect the button to a function
         button.clicked.connect(self.on_button_click)
