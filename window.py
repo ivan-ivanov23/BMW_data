@@ -27,6 +27,8 @@ class MainWindow(QMainWindow):
         model_box.setFixedSize(100, 20)
         model_box.addItem("E46")
         model_box.addItem("E90")
+        # Set default value as empty
+        model_box.setCurrentIndex(-1)
 
         button = QPushButton("Show Data")
         button.setFixedSize(100, 20)
