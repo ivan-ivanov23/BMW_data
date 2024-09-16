@@ -1,7 +1,7 @@
 import sys
 
 from PyQt6.QtCore import QSize, Qt
-from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QLabel, QWidget
+from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QHBoxLayout, QLabel, QWidget, QComboBox
 
 # Subclass QMainWindow to customize your application's main window
 class MainWindow(QMainWindow):
@@ -21,12 +21,22 @@ class MainWindow(QMainWindow):
         title = QLabel("BMW Data")
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
+        # Button and QCombobox layout
+        button_layout = QHBoxLayout()
+        model_box = QComboBox()
+        model_box.addItem("E46")
+        model_box.addItem("E90")
+
         button = QPushButton("Press Me!")
         button.setFixedSize(100, 50)
 
+        # Add model_box and button to layout
+        button_layout.addWidget(model_box)
+        button_layout.addWidget(button)
+
         # Add widgets to main layout
         main_layout.addWidget(title)
-        main_layout.addWidget(button)
+        main_layout.addLayout(button_layout)
 
         # Create a central widget to hold the other widgets and layouts
         central_widget = QWidget()
