@@ -23,19 +23,22 @@ class MainWindow(QMainWindow):
 
         # Button and QCombobox layout
         button_layout = QHBoxLayout()
-        model_box = QComboBox()
-        model_box.setFixedSize(100, 20)
-        model_box.addItem("E46")
-        model_box.addItem("E90")
+        self.model_box = QComboBox()
+        self.model_box.setFixedSize(100, 20)
+        self.model_box.addItem("E46")
+        self.model_box.addItem("E90")
         # Set default value as empty
-        model_box.setCurrentIndex(-1)
+        self.model_box.setCurrentIndex(-1)
+        # When an option from box chosen, enable button
+        self.model_box.currentIndexChanged.connect(self.on_model_changed)
 
-        button = QPushButton("Show Data")
-        button.setFixedSize(100, 20)
+        self.button = QPushButton("Show Data")
+        self.button.setEnabled(False)
+        self.button.setFixedSize(100, 20)
 
         # Add model_box and button to layout
-        button_layout.addWidget(model_box)
-        button_layout.addWidget(button)
+        button_layout.addWidget(self.model_box)
+        button_layout.addWidget(self.button)
         button_layout.addStretch(1)
 
         # Add widgets to main layout
@@ -48,10 +51,16 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(central_widget)
 
         # Connect the button to a function
-        button.clicked.connect(self.on_button_click)
+        self.button.clicked.connect(self.on_button_click)
 
     def on_button_click(self):
         print("Button clicked")
+
+
+    def on_model_changed(self):
+        # Enable the button when a valid option is selected
+        if self.model_box.currentIndex() != -1:
+            self.button.setEnabled(True)
 
 
 # Create the application instance
