@@ -24,15 +24,17 @@ class MainWindow(QMainWindow):
         # Button and QCombobox layout
         button_layout = QHBoxLayout()
         model_box = QComboBox()
+        model_box.setFixedSize(100, 20)
         model_box.addItem("E46")
         model_box.addItem("E90")
 
-        button = QPushButton("Press Me!")
-        button.setFixedSize(100, 50)
+        button = QPushButton("Show Data")
+        button.setFixedSize(100, 20)
 
         # Add model_box and button to layout
         button_layout.addWidget(model_box)
         button_layout.addWidget(button)
+        button_layout.addStretch(1)
 
         # Add widgets to main layout
         main_layout.addWidget(title)
