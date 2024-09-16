@@ -24,6 +24,7 @@ class MainWindow(QMainWindow):
 
         # Select model label
         select = QLabel("Select a BMW model")
+        select.setStyleSheet("QLabel{font-size: 12pt;}")
         select.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         # Button and QCombobox layout
