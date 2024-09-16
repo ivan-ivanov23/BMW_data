@@ -19,7 +19,12 @@ class MainWindow(QMainWindow):
 
         # Title label
         title = QLabel("BMW Data")
+        title.setStyleSheet("QLabel{font-size: 18pt; font: bold}")
         title.setAlignment(Qt.AlignmentFlag.AlignTop)
+
+        # Select model label
+        select = QLabel("Select a BMW model")
+        select.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         # Button and QCombobox layout
         button_layout = QHBoxLayout()
@@ -43,6 +48,7 @@ class MainWindow(QMainWindow):
 
         # Add widgets to main layout
         main_layout.addWidget(title)
+        main_layout.addWidget(select)
         main_layout.addLayout(button_layout)
 
         # Create a central widget to hold the other widgets and layouts
