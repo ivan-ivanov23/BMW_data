@@ -14,8 +14,8 @@ class MainWindow(QMainWindow):
         self.setFixedSize(400, 300)
 
         # Main layout
-        self.main_layout = QVBoxLayout()
-        self.main_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        main_layout = QVBoxLayout()
+        main_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         # Title label
         title = QLabel("BMW Data")
@@ -25,12 +25,12 @@ class MainWindow(QMainWindow):
         button.setFixedSize(100, 50)
 
         # Add widgets to main layout
-        self.main_layout.addWidget(title)
-        self.main_layout.addWidget(button)
+        main_layout.addWidget(title)
+        main_layout.addWidget(button)
 
-        # Create a central widget to set the main layout on it
+        # Create a central widget to hold the other widgets and layouts
         central_widget = QWidget()
-        central_widget.setLayout(self.main_layout)
+        central_widget.setLayout(main_layout)
         self.setCentralWidget(central_widget)
 
         # Connect the button to a function
