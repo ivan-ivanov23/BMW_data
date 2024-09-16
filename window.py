@@ -15,11 +15,11 @@ class MainWindow(QMainWindow):
 
         # Main layout
         main_layout = QVBoxLayout()
-        main_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        main_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         # Title label
         title = QLabel("BMW Data")
-        title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        title.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         # Button and QCombobox layout
         button_layout = QHBoxLayout()
