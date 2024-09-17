@@ -95,9 +95,14 @@ class MainWindow(QMainWindow):
     def on_button_click(self):
         # Get the selected model from the combobox and display its name
         combo_name = self.gen_box.currentText()
+        combo_year = self.year_box.currentText()
+        combo_mod = self.mod_box.currentText()
+
+        # Name and Year together
+        name_year = combo_name + ", " + combo_year
 
         # Create table for car data
-        table_data = [[combo_name, ''],
+        table_data = [[name_year, combo_mod],
               ['Model', '3 Series'],
               ['Generation', 'E46'],
               ['Modification', '320d'],
