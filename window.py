@@ -2,6 +2,7 @@ import sys
 
 from PyQt6.QtCore import QSize, Qt
 from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QHBoxLayout, QLabel, QWidget, QComboBox
+from PyQt6.QtWebEngineWidgets import QWebEngineView
 
 # Subclass QMainWindow to customize your application's main window
 class MainWindow(QMainWindow):
@@ -11,7 +12,7 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("BMW Data")
 
         # Set fixed size
-        self.setFixedSize(400, 300)
+        self.setFixedSize(600, 400)
 
         # Main layout
         main_layout = QVBoxLayout()
@@ -42,6 +43,10 @@ class MainWindow(QMainWindow):
         self.button.setEnabled(False)
         self.button.setFixedSize(100, 20)
 
+        # WebEngineView for data table
+        self.web_engine = QWebEngineView()
+        self.loadPage()
+
         # Add model_box and button to layout
         button_layout.addWidget(self.model_box)
         button_layout.addWidget(self.button)
@@ -51,6 +56,7 @@ class MainWindow(QMainWindow):
         main_layout.addWidget(title)
         main_layout.addWidget(select)
         main_layout.addLayout(button_layout)
+        main_layout.addWidget(self.web_engine)
 
         # Create a central widget to hold the other widgets and layouts
         central_widget = QWidget()
@@ -68,6 +74,13 @@ class MainWindow(QMainWindow):
         # Enable the button when a valid option is selected
         if self.model_box.currentIndex() != -1:
             self.button.setEnabled(True)
+
+    # Source: https://zetcode.com/pyqt/qwebengineview/
+    def loadPage(self):
+        with open('test.html', 'r') as f:
+
+            html = f.read()
+            self.web_engine.setHtml(html)
 
 
 # Create the application instance
