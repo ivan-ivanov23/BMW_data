@@ -3,6 +3,7 @@ import sys
 from PyQt6.QtCore import QSize, Qt
 from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QHBoxLayout, QLabel, QWidget, QComboBox
 from PyQt6.QtWebEngineWidgets import QWebEngineView
+import plotly.figure_factory as ff
 
 # Subclass QMainWindow to customize your application's main window
 class MainWindow(QMainWindow):
@@ -67,7 +68,20 @@ class MainWindow(QMainWindow):
         self.button.clicked.connect(self.on_button_click)
 
     def on_button_click(self):
-        print("Button clicked")
+        # Get the selected model from the combobox and display its name
+        model = self.model_box.currentText()
+        table_data = [[model, ''],
+              ['Montréal<br>Canadiens', 18],
+              ['Dallas Stars', 18],
+              ['NY Rangers', 16],
+              ['Boston<br>Bruins', 13],
+              ['Chicago<br>Blackhawks', 13],
+              ['LA Kings', 13],
+              ['Ottawa<br>Senators', 12]]
+
+        fig = ff.create_table(table_data, height_constant=60)
+
+        self.web_engine.setHtml(fig.to_html(include_plotlyjs='cdn'))
 
 
     def on_model_changed(self):
