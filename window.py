@@ -25,20 +25,40 @@ class MainWindow(QMainWindow):
         title.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         # Select model label
-        select = QLabel("Select a BMW model")
+        select = QLabel("Select a BMW 3 Series generation, year and modification:")
         select.setStyleSheet("QLabel{font-size: 12pt;}")
         select.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         # Button and QCombobox layout
         button_layout = QHBoxLayout()
-        self.model_box = QComboBox()
-        self.model_box.setFixedSize(100, 20)
-        self.model_box.addItem("E46")
-        self.model_box.addItem("E90")
+
+        # Combo box for model generations
+        self.gen_box = QComboBox()
+        self.gen_box.setFixedSize(100, 20)
+        self.gen_box.addItem("E46")
+        self.gen_box.addItem("E90")
         # Set default value as empty
-        self.model_box.setCurrentIndex(-1)
+        self.gen_box.setCurrentIndex(-1)
         # When an option from box chosen, enable button
-        self.model_box.currentIndexChanged.connect(self.on_model_changed)
+        # self.gen_box.currentIndexChanged.connect(self.on_model_changed)
+
+        # Combo box for year
+        self.year_box = QComboBox()
+        self.year_box.setFixedSize(100, 20)
+        self.year_box.addItem("2001-05")
+        self.year_box.addItem("2005-10")
+        # Set default value as empty
+        self.year_box.setCurrentIndex(-1)
+        self.year_box.setEnabled(False)
+
+        # Combo box for modification
+        self.mod_box = QComboBox()
+        self.mod_box.setFixedSize(100, 20)
+        self.mod_box.addItem("320d")
+        self.mod_box.addItem("330d")
+        # Set default value as empty
+        self.mod_box.setCurrentIndex(-1)
+        self.mod_box.setEnabled(False)
 
         self.button = QPushButton("Show Data")
         self.button.setEnabled(False)
@@ -49,7 +69,9 @@ class MainWindow(QMainWindow):
         self.loadPage()
 
         # Add model_box and button to layout
-        button_layout.addWidget(self.model_box)
+        button_layout.addWidget(self.gen_box)
+        button_layout.addWidget(self.year_box)
+        button_layout.addWidget(self.mod_box)
         button_layout.addWidget(self.button)
         button_layout.addStretch(1)
 
@@ -66,10 +88,13 @@ class MainWindow(QMainWindow):
 
         # Connect the button to a function
         self.button.clicked.connect(self.on_button_click)
+        self.gen_box.currentIndexChanged.connect(self.on_combo_change)
+        self.year_box.currentIndexChanged.connect(self.on_combo_change)
+        self.mod_box.currentIndexChanged.connect(self.on_combo_change)
 
     def on_button_click(self):
         # Get the selected model from the combobox and display its name
-        combo_name = self.model_box.currentText()
+        combo_name = self.gen_box.currentText()
 
         # Create table for car data
         table_data = [[combo_name, ''],
@@ -90,10 +115,22 @@ class MainWindow(QMainWindow):
         self.web_engine.setHtml(fig.to_html(include_plotlyjs='cdn'))
 
 
-    def on_model_changed(self):
-        # Enable the button when a valid option is selected
-        if self.model_box.currentIndex() != -1:
+    def on_combo_change(self):
+        # Enable the button when all options are selected
+        if self.gen_box.currentIndex() != -1 and self.year_box.currentIndex() != -1 and self.mod_box.currentIndex() != -1:
             self.button.setEnabled(True)
+
+        # Enable year_box when gen_box has a valid option
+        if self.gen_box.currentIndex() != -1:
+            self.year_box.setEnabled(True)
+        else:
+            self.year_box.setEnabled(False)
+
+        # Enable mod_box when year_box has a valid option
+        if self.year_box.currentIndex() != -1:
+            self.mod_box.setEnabled(True)
+        else:
+            self.mod_box.setEnabled(False)
 
     # Source: https://zetcode.com/pyqt/qwebengineview/
     def loadPage(self):
