@@ -70,6 +70,8 @@ class MainWindow(QMainWindow):
     def on_button_click(self):
         # Get the selected model from the combobox and display its name
         combo_name = self.model_box.currentText()
+
+        # Create table for car data
         table_data = [[combo_name, ''],
               ['Model', '3 Series'],
               ['Generation', 'E46'],
@@ -84,6 +86,7 @@ class MainWindow(QMainWindow):
 
         fig = ff.create_table(table_data, height_constant=60)
 
+        # Show table in webengineview
         self.web_engine.setHtml(fig.to_html(include_plotlyjs='cdn'))
 
 
@@ -94,6 +97,7 @@ class MainWindow(QMainWindow):
 
     # Source: https://zetcode.com/pyqt/qwebengineview/
     def loadPage(self):
+        # Load initial webengineview page
         with open('test.html', 'r') as f:
 
             html = f.read()
