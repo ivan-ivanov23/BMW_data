@@ -69,15 +69,18 @@ class MainWindow(QMainWindow):
 
     def on_button_click(self):
         # Get the selected model from the combobox and display its name
-        model = self.model_box.currentText()
-        table_data = [[model, ''],
-              ['Montréal<br>Canadiens', 18],
-              ['Dallas Stars', 18],
-              ['NY Rangers', 16],
-              ['Boston<br>Bruins', 13],
-              ['Chicago<br>Blackhawks', 13],
-              ['LA Kings', 13],
-              ['Ottawa<br>Senators', 12]]
+        combo_name = self.model_box.currentText()
+        table_data = [[combo_name, ''],
+              ['Model', '3 Series'],
+              ['Generation', 'E46'],
+              ['Modification', '320d'],
+              ['Production<br>Years', '2001-05'],
+              ['Fuel', 'Diesel'],
+              ['HP', 150],
+              ['Torque', '330 Nm'],
+              ['0-100 km/h', '8.9 sec'],
+              ['Top Speed', '221 km/h'],
+              ['Avg.<br>Fuel Consumption', '5.5 L/km']]
 
         fig = ff.create_table(table_data, height_constant=60)
 
