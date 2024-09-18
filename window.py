@@ -84,7 +84,6 @@ class MainWindow(QMainWindow):
         grid.addWidget(self.year_box, 1, 1)
         grid.addWidget(self.mod_box, 1, 2)
         grid.addWidget(self.button, 1, 3)
-        grid.setVerticalSpacing(1)
 
         # Add widgets to main layout
         main_layout.addWidget(title)
