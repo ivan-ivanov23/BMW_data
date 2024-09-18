@@ -1,6 +1,6 @@
 import sys
 
-from PyQt6.QtCore import QSize, Qt
+from PyQt6.QtCore import QUrl, Qt
 from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QHBoxLayout, QLabel, QWidget, QComboBox, QGridLayout
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 import plotly.figure_factory as ff
@@ -149,11 +149,10 @@ class MainWindow(QMainWindow):
 
     # Source: https://zetcode.com/pyqt/qwebengineview/
     def loadPage(self):
-        # Load initial webengineview page
-        with open('test.html', 'r') as f:
-
-            html = f.read()
-            self.web_engine.setHtml(html)
+        # SHow the test.html file in the QWebEngineView
+        url = QUrl.fromLocalFile("/test.html")
+        self.web_engine.load(url)
+        
 
 
 # Create the application instance
