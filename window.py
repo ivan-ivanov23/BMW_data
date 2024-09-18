@@ -1,7 +1,7 @@
 import sys
 
 from PyQt6.QtCore import QUrl, Qt
-from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QHBoxLayout, QLabel, QWidget, QComboBox, QGridLayout
+from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QLabel, QWidget, QComboBox, QGridLayout
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 from PyQt6.QtGui import QIcon
 import plotly.figure_factory as ff
