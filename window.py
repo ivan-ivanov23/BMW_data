@@ -3,6 +3,7 @@ import sys
 from PyQt6.QtCore import QUrl, Qt
 from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QHBoxLayout, QLabel, QWidget, QComboBox, QGridLayout
 from PyQt6.QtWebEngineWidgets import QWebEngineView
+from PyQt6.QtGui import QIcon
 import plotly.figure_factory as ff
 
 # Subclass QMainWindow to customize your application's main window
@@ -11,6 +12,7 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         self.setWindowTitle("BMW Data")
+        self.setWindowIcon(QIcon("icon.png"))
 
         # Set fixed size
         self.setFixedSize(600, 400)
