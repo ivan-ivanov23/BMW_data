@@ -25,7 +25,7 @@ class MainWindow(QMainWindow):
         title.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         # Select model label
-        select = QLabel("Select a BMW 3 Series generation, year and modification:")
+        select = QLabel("Select a BMW 3 Series specification")
         select.setStyleSheet("QLabel{font-size: 12pt;}")
         select.setAlignment(Qt.AlignmentFlag.AlignTop)
 
