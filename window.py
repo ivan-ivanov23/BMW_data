@@ -175,10 +175,7 @@ class MainWindow(QMainWindow):
         self.mod_box.setEnabled(False)
 
         # Load the initial.html file
-        self.loadPage()
-
-        
-        
+        self.loadPage()    
 
 
 # Create the application instance
