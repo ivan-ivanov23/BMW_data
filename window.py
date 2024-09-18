@@ -1,7 +1,7 @@
 import sys
 
 from PyQt6.QtCore import QSize, Qt
-from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QHBoxLayout, QLabel, QWidget, QComboBox
+from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QHBoxLayout, QLabel, QWidget, QComboBox, QGridLayout
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 import plotly.figure_factory as ff
 
@@ -29,8 +29,11 @@ class MainWindow(QMainWindow):
         select.setStyleSheet("QLabel{font-size: 12pt;}")
         select.setAlignment(Qt.AlignmentFlag.AlignTop)
 
+        # Grid layout for combo boxes and their labels
+        grid = QGridLayout()
+        grid.setAlignment(Qt.AlignmentFlag.AlignLeft)
+
         # Button label layout and labels
-        button_label_layout = QHBoxLayout()
         generation = QLabel("Generation:")
         generation.setAlignment(Qt.AlignmentFlag.AlignLeft)
         year = QLabel("Year:")
@@ -38,13 +41,9 @@ class MainWindow(QMainWindow):
         mod = QLabel("Modification:")
         mod.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
-        button_label_layout.addWidget(generation)
-        button_label_layout.addWidget(year)
-        button_label_layout.addWidget(mod)
-        button_label_layout.addSpacing(2)
-
-        # Button and QCombobox layout
-        button_layout = QHBoxLayout()
+        grid.addWidget(generation, 0, 0)
+        grid.addWidget(year, 0, 1)
+        grid.addWidget(mod, 0, 2)
 
         # Combo box for model generations
         self.gen_box = QComboBox()
@@ -53,8 +52,6 @@ class MainWindow(QMainWindow):
         self.gen_box.addItem("E90")
         # Set default value as empty
         self.gen_box.setCurrentIndex(-1)
-        # When an option from box chosen, enable button
-        # self.gen_box.currentIndexChanged.connect(self.on_model_changed)
 
         # Combo box for year
         self.year_box = QComboBox()
@@ -83,17 +80,16 @@ class MainWindow(QMainWindow):
         self.loadPage()
 
         # Add model_box and button to layout
-        button_layout.addWidget(self.gen_box)
-        button_layout.addWidget(self.year_box)
-        button_layout.addWidget(self.mod_box)
-        button_layout.addWidget(self.button)
-        button_layout.addStretch(1)
+        grid.addWidget(self.gen_box, 1, 0)
+        grid.addWidget(self.year_box, 1, 1)
+        grid.addWidget(self.mod_box, 1, 2)
+        grid.addWidget(self.button, 1, 3)
+        grid.setVerticalSpacing(1)
 
         # Add widgets to main layout
         main_layout.addWidget(title)
         main_layout.addWidget(select)
-        main_layout.addLayout(button_label_layout)
-        main_layout.addLayout(button_layout)
+        main_layout.addLayout(grid)
         main_layout.addWidget(self.web_engine)
 
         # Create a central widget to hold the other widgets and layouts
