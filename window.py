@@ -151,8 +151,8 @@ class MainWindow(QMainWindow):
 
     # Source: https://zetcode.com/pyqt/qwebengineview/
     def loadPage(self):
-        # SHow the test.html file in the QWebEngineView
-        url = QUrl.fromLocalFile("/test.html")
+        # SHow the initial.html file in the QWebEngineView
+        url = QUrl.fromLocalFile("/initial.html")
         self.web_engine.load(url)
         
 
