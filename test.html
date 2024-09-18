@@ -4,10 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home page</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden; /* Prevent scrollbars */
+        }
+        img {
+            position: fixed; /* Make the image static */
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensure the image covers the entire area */
+        }
+    </style>
 </head>
 <body>
-    <p>
-        This is a simple HTML page.
-    </p>
+    <!-- Add the logo.svg file to the page -->
+    <img src="logo.svg" alt="logo">
 </body>
 </html>
