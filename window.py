@@ -77,6 +77,10 @@ class MainWindow(QMainWindow):
         self.button.setEnabled(False)
         self.button.setFixedSize(100, 20)
 
+        self.clear_button = QPushButton("Clear")
+        self.clear_button.setEnabled(False)
+        self.clear_button.setFixedSize(100, 20)
+
         # WebEngineView for data table
         self.web_engine = QWebEngineView()
         self.loadPage()
@@ -86,6 +90,7 @@ class MainWindow(QMainWindow):
         grid.addWidget(self.year_box, 1, 1)
         grid.addWidget(self.mod_box, 1, 2)
         grid.addWidget(self.button, 1, 3)
+        grid.addWidget(self.clear_button, 1, 4)
 
         # Add widgets to main layout
         main_layout.addWidget(title)
@@ -103,6 +108,7 @@ class MainWindow(QMainWindow):
         self.gen_box.currentIndexChanged.connect(self.on_combo_change)
         self.year_box.currentIndexChanged.connect(self.on_combo_change)
         self.mod_box.currentIndexChanged.connect(self.on_combo_change)
+        self.clear_button.clicked.connect(self.clear)
 
     def on_button_click(self):
         # Get the selected model from the combobox and display its name
@@ -131,6 +137,8 @@ class MainWindow(QMainWindow):
         # Show table in webengineview
         self.web_engine.setHtml(fig.to_html(include_plotlyjs='cdn'))
 
+        self.clear_button.setEnabled(True)
+
 
     def on_combo_change(self):
         # Enable the button when all options are selected
@@ -154,6 +162,22 @@ class MainWindow(QMainWindow):
         # SHow the initial.html file in the QWebEngineView
         url = QUrl.fromLocalFile("/initial.html")
         self.web_engine.load(url)
+
+    def clear(self):
+        # Clear all combo boxes and disable the button
+        self.gen_box.setCurrentIndex(-1)
+        self.year_box.setCurrentIndex(-1)
+        self.mod_box.setCurrentIndex(-1)
+        self.button.setEnabled(False)
+
+        # Disable year_box and mod_box
+        self.year_box.setEnabled(False)
+        self.mod_box.setEnabled(False)
+
+        # Load the initial.html file
+        self.loadPage()
+
+        
         
 
 
