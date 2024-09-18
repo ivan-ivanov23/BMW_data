@@ -29,6 +29,20 @@ class MainWindow(QMainWindow):
         select.setStyleSheet("QLabel{font-size: 12pt;}")
         select.setAlignment(Qt.AlignmentFlag.AlignTop)
 
+        # Button label layout and labels
+        button_label_layout = QHBoxLayout()
+        generation = QLabel("Generation:")
+        generation.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        year = QLabel("Year:")
+        year.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        mod = QLabel("Modification:")
+        mod.setAlignment(Qt.AlignmentFlag.AlignLeft)
+
+        button_label_layout.addWidget(generation)
+        button_label_layout.addWidget(year)
+        button_label_layout.addWidget(mod)
+        button_label_layout.addSpacing(2)
+
         # Button and QCombobox layout
         button_layout = QHBoxLayout()
 
@@ -78,6 +92,7 @@ class MainWindow(QMainWindow):
         # Add widgets to main layout
         main_layout.addWidget(title)
         main_layout.addWidget(select)
+        main_layout.addLayout(button_label_layout)
         main_layout.addLayout(button_layout)
         main_layout.addWidget(self.web_engine)
 
