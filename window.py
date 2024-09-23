@@ -5,11 +5,15 @@ from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout,
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 from PyQt6.QtGui import QIcon
 import plotly.figure_factory as ff
+import sqlite3
+import os
 
 # Subclass QMainWindow to customize your application's main window
 class MainWindow(QMainWindow):
+
     def __init__(self):
         super().__init__()
+        self.years = None
 
         self.setWindowTitle("BMW Data")
         self.setWindowIcon(QIcon("icon.png"))
@@ -58,8 +62,8 @@ class MainWindow(QMainWindow):
         # Combo box for year
         self.year_box = QComboBox()
         self.year_box.setFixedSize(100, 20)
-        self.year_box.addItem("2001-05")
-        self.year_box.addItem("2005-10")
+        # self.year_box.addItem(self.years)
+        # self.year_box.addItem("2005-10")
         # Set default value as empty
         self.year_box.setCurrentIndex(-1)
         self.year_box.setEnabled(False)
@@ -106,7 +110,7 @@ class MainWindow(QMainWindow):
         # Connect the button to a function
         self.button.clicked.connect(self.on_button_click)
         self.gen_box.currentIndexChanged.connect(self.on_combo_change)
-        self.year_box.currentIndexChanged.connect(self.on_combo_change)
+        self.year_box.currentIndexChanged.connect(self.on_year_change)
         self.mod_box.currentIndexChanged.connect(self.on_combo_change)
         self.clear_button.clicked.connect(self.clear)
 
@@ -146,8 +150,22 @@ class MainWindow(QMainWindow):
             self.button.setEnabled(True)
 
         # Enable year_box when gen_box has a valid option
-        if self.gen_box.currentIndex() != -1:
-            self.year_box.setEnabled(True)
+        if self.gen_box.currentText() == "E46":
+            # Connect to database
+            basedir = os.path.abspath(os.path.dirname(__file__))
+            conn = sqlite3.connect(os.path.join(basedir, 'bmw_data.db'))
+            # Get a list of the values in the db
+            # Source: https://stackoverflow.com/questions/2854011/get-a-list-of-field-values-from-pythons-sqlite3-not-tuples-representing-rows 
+            conn.row_factory = lambda cursor, row: row[0]
+            cursor = conn.cursor()
+            # Select all years from the E46 Table
+            cursor.execute("SELECT Production FROM E46")
+            # Make the years a set, so that they do not repeat
+            self.years = set(cursor.fetchall())
+            # Add these years to the year combo box
+            for i in self.years:
+                self.year_box.addItem(i)
+            self.year_box.setEnabled(True) 
         else:
             self.year_box.setEnabled(False)
 
