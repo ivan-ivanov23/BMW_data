@@ -69,8 +69,6 @@ class MainWindow(QMainWindow):
         # Combo box for modification
         self.mod_box = QComboBox()
         self.mod_box.setFixedSize(100, 20)
-        self.mod_box.addItem("320d")
-        self.mod_box.addItem("330d")
         # Set default value as empty
         self.mod_box.setCurrentIndex(-1)
         self.mod_box.setEnabled(False)
@@ -108,8 +106,8 @@ class MainWindow(QMainWindow):
         # Connect the button to a function
         self.button.clicked.connect(self.on_button_click)
         self.gen_box.currentIndexChanged.connect(self.on_gen_change)
-        self.year_box.currentIndexChanged.connect(self.on_combo_change)
-        self.mod_box.currentIndexChanged.connect(self.on_combo_change)
+        self.year_box.currentIndexChanged.connect(self.on_year_change)
+        self.mod_box.currentIndexChanged.connect(self.on_mod_change)
         self.clear_button.clicked.connect(self.clear)
 
     def on_button_click(self):
@@ -141,42 +139,6 @@ class MainWindow(QMainWindow):
 
         self.clear_button.setEnabled(True)
 
-
-    def on_combo_change(self):
-        # Enable the button when all options are selected
-        if self.gen_box.currentIndex() != -1 and self.year_box.currentIndex() != -1 and self.mod_box.currentIndex() != -1:
-            self.button.setEnabled(True)
-
-        # Enable year_box when gen_box has a valid option
-        # if self.gen_box.currentIndex() != -1:
-        # if self.gen_box.currentText() == "E46":
-        #     # Clear the year_box
-        #     # self.year_box.clear()
-        #     # Connect to database
-        #     basedir = os.path.abspath(os.path.dirname(__file__))
-        #     conn = sqlite3.connect(os.path.join(basedir, 'bmw_data.db'))
-        #     # Get a list of the values in the db
-        #     # Source: https://stackoverflow.com/questions/2854011/get-a-list-of-field-values-from-pythons-sqlite3-not-tuples-representing-rows 
-        #     conn.row_factory = lambda cursor, row: row[0]
-        #     cursor = conn.cursor()
-        #     # Select all years from the E46 Table
-        #     cursor.execute("SELECT Production FROM E46")
-        #     # Make the years a set, so that they do not repeat
-        #     self.years = set(cursor.fetchall())
-        #     # Add these years to the year combo box
-        #     for i in self.years:
-        #         self.year_box.addItem(i)
-            # self.year_box.setEnabled(True)
-
-        # else:
-        #     self.year_box.setEnabled(False)
-
-        # Enable mod_box when year_box has a valid option
-        if self.year_box.currentIndex() != -1:
-            self.mod_box.setEnabled(True)
-        else:
-            self.mod_box.setEnabled(False)
-
     def on_gen_change(self):
         # If the generation is E46 get all the years from the database for the E46
         # Make them a set so that they do not repeat and add them to the year_box
@@ -198,6 +160,8 @@ class MainWindow(QMainWindow):
             # Add these years to the year combo box
             for i in self.years:
                 self.year_box.addItem(i)
+            self.year_box.setCurrentIndex(-1)
+            self.year_box.setEnabled(True)
 
         else:
             # Clear the year_box
@@ -216,9 +180,43 @@ class MainWindow(QMainWindow):
             # Add these years to the year combo box
             for i in self.years:
                 self.year_box.addItem(i)
+            self.year_box.setCurrentIndex(-1)
+            self.year_box.setEnabled(True)
 
-        # Enable year_box
-        self.year_box.setEnabled(True)
+    def on_year_change(self):
+        if self.year_box.currentText() != "":
+            # Get the current generation 
+            generation = self.gen_box.currentText()
+            # For current year, get all the modifications from the database and add them to the mod_box
+            # Once a year is selected, enable the mod_box
+            # But if the year is not selected, disable the mod_box
+            # Connect to database
+            basedir = os.path.abspath(os.path.dirname(__file__))
+            conn = sqlite3.connect(os.path.join(basedir, 'bmw_data.db'))
+            # Get a list of the values in the db
+            # Source: https://stackoverflow.com/questions/2854011/get-a-list-of-field-values-from-pythons-sqlite3-not-tuples-representing-rows
+            conn.row_factory = lambda cursor, row: row[0]
+            cursor = conn.cursor()
+            # Select all modifications for the current year
+            cursor.execute("SELECT Modification FROM " + generation + " WHERE Production = ?", (self.year_box.currentText(),))
+            # Make the modifications a set, so that they do not repeat
+            mods = set(cursor.fetchall())
+            # Add these modifications to the mod combo box
+            for i in mods:
+                self.mod_box.addItem(i)
+            self.mod_box.setCurrentIndex(-1)
+            self.mod_box.setEnabled(True)
+        else:
+            self.mod_box.clear()
+            self.mod_box.setEnabled(False)
+            self.button.setEnabled(False)
+
+    def on_mod_change(self):
+        # Enable the button when all options are selected
+        if self.gen_box.currentIndex() != -1 and self.year_box.currentIndex() != -1 and self.mod_box.currentIndex() != -1:
+            self.button.setEnabled(True)
+
+
 
     # Source: https://zetcode.com/pyqt/qwebengineview/
     def loadPage(self):
