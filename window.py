@@ -215,6 +215,8 @@ class MainWindow(QMainWindow):
         # Enable the button when all options are selected
         if self.gen_box.currentIndex() != -1 and self.year_box.currentIndex() != -1 and self.mod_box.currentIndex() != -1:
             self.button.setEnabled(True)
+        else:
+            self.button.setEnabled(False)
 
 
 
