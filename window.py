@@ -107,21 +107,39 @@ class MainWindow(QMainWindow):
         self.year_box.currentIndexChanged.connect(self.on_year_change)
         self.mod_box.currentIndexChanged.connect(self.on_mod_change)
 
-    # def on_button_click(self):
-    #     # Get the selected model from the combobox and display its name
-    #     combo_name = self.gen_box.currentText()
-    #     combo_year = self.year_box.currentText()
-    #     combo_mod = self.mod_box.currentText()
-    #     data = self.find_data(combo_name, combo_year, combo_mod)
+    def on_button_click(self):
+        # Get the selected model from the combobox and display its name
+        combo_gen = self.gen_box.currentText()
+        combo_year = self.year_box.currentText()
+        combo_mod = self.mod_box.currentText()
+        data = self.find_data(combo_gen, combo_year, combo_mod)
 
-    #     # Create a table for the car data
-    #     # Source: https://plotly.com/python/table/
+        # Create a table for the car data
+        # Source: https://plotly.com/python/table/
 
 
-    #     # Name and Year together
-    #     name_year = combo_name + ", " + combo_year
+        # Name and Year together
+        name_year = combo_gen + ", " + combo_year
 
-    #     table_data = [[name_year, combo_mod], 
+    # Create table for car data
+        table_data = [[name_year, combo_mod],
+              ['Model', '3 Series'],
+              ['Generation', combo_gen],
+              ['Modification', data[0]],
+              ['Production<br>Years', data[1]],
+              ['Fuel', data[2]],
+              ['HP', data[3] + ' hp'],
+              ['Torque', data[4] + ' Nm'],
+              ['0-100 km/h', data[5] + ' s'],
+              ['Top Speed', data[6] + ' km/h'],
+              ['Avg.<br>Fuel Consumption', data[7] + ' l/100km']]
+
+        fig = ff.create_table(table_data, height_constant=60)
+
+        # Show table in webengineview
+        self.web_engine.setHtml(fig.to_html(include_plotlyjs='cdn'))
+
+        self.clear_button.setEnabled(True)
     def on_gen_change(self):
         # If the generation is E46 get all the years from the database for the E46
         # Make them a set so that they do not repeat and add them to the year_box
@@ -234,11 +252,18 @@ class MainWindow(QMainWindow):
         conn = sqlite3.connect(os.path.join(basedir, 'bmw_data.db'))
         cursor = conn.cursor()
         # Get the data from the database
-        cursor.execute("SELECT * FROM " + gen + " WHERE Production = ? AND Modification = ?", (year, mod))
+        if gen == "E46":
+        # Select the data from the table (gen) where the year is 2001-05 and the model is 320d
+            # Source: https://stackoverflow.com/a/21734918/24109934 
+            cursor.execute("SELECT * FROM E46 WHERE Production = ? AND Modification = ?", (year, mod))
+        else:
+            cursor.execute("SELECT * FROM E90 WHERE Production = ? AND Modification = ?", (year, mod))
         data = cursor.fetchall()
-        # Return the data as table
-        pd = pd.DataFrame(data)
-        return pd
+        # Result list of strings
+        new_data = []
+        for i in data[0]:
+            new_data.append(str(i))
+        return new_data
 
 
 # Create the application instance
