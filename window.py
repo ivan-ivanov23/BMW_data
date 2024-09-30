@@ -113,15 +113,11 @@ class MainWindow(QMainWindow):
         combo_year = self.year_box.currentText()
         combo_mod = self.mod_box.currentText()
         data = self.find_data(combo_gen, combo_year, combo_mod)
-
-        # Create a table for the car data
-        # Source: https://plotly.com/python/table/
-
-
         # Name and Year together
         name_year = combo_gen + ", " + combo_year
 
-    # Create table for car data
+        # Create table for car data
+        # Source: https://plotly.com/python/table/
         table_data = [[name_year, combo_mod],
               ['Model', '3 Series'],
               ['Generation', combo_gen],
@@ -140,6 +136,27 @@ class MainWindow(QMainWindow):
         self.web_engine.setHtml(fig.to_html(include_plotlyjs='cdn'))
 
         self.clear_button.setEnabled(True)
+
+    def find_data(self, gen, year, mod):
+        # Connect to database
+        basedir = os.path.abspath(os.path.dirname(__file__))
+        conn = sqlite3.connect(os.path.join(basedir, 'bmw_data.db'))
+        cursor = conn.cursor()
+        # Get the data from the database
+        if gen == "E46":
+        # Select the data from the table (gen) where the year is 2001-05 and the model is 320d
+            # Source: https://stackoverflow.com/a/21734918/24109934 
+            cursor.execute("SELECT * FROM E46 WHERE Production = ? AND Modification = ?", (year, mod))
+        else:
+            cursor.execute("SELECT * FROM E90 WHERE Production = ? AND Modification = ?", (year, mod))
+        data = cursor.fetchall()
+        # Result list of strings
+        new_data = []
+        for i in data[0]:
+            new_data.append(str(i))
+        return new_data
+
+    
     def on_gen_change(self):
         # If the generation is E46 get all the years from the database for the E46
         # Make them a set so that they do not repeat and add them to the year_box
@@ -245,25 +262,6 @@ class MainWindow(QMainWindow):
 
         # Load the initial.html file
         self.loadPage()    
-
-    def find_data(self, gen, year, mod):
-        # Connect to database
-        basedir = os.path.abspath(os.path.dirname(__file__))
-        conn = sqlite3.connect(os.path.join(basedir, 'bmw_data.db'))
-        cursor = conn.cursor()
-        # Get the data from the database
-        if gen == "E46":
-        # Select the data from the table (gen) where the year is 2001-05 and the model is 320d
-            # Source: https://stackoverflow.com/a/21734918/24109934 
-            cursor.execute("SELECT * FROM E46 WHERE Production = ? AND Modification = ?", (year, mod))
-        else:
-            cursor.execute("SELECT * FROM E90 WHERE Production = ? AND Modification = ?", (year, mod))
-        data = cursor.fetchall()
-        # Result list of strings
-        new_data = []
-        for i in data[0]:
-            new_data.append(str(i))
-        return new_data
 
 
 # Create the application instance
