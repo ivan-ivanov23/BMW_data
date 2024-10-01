@@ -14,14 +14,14 @@
   
 - 🔄 **All Years and Modifications**: Comprehensive data for all model years and variations, ensuring you have the complete picture of your BMW 3 Series.
 
-- 🔍 **Easy Search**: Quickly find the exact model you're looking for by year, model, or specification.
+- 🔍 **Easy Search**: Quickly find the exact model you're looking for by generation, year and modification.
 
 ## Supported Models
 
 - **BMW E46 3 Series** (Produced from 1998 to 2006)
 - **BMW E90 3 Series** (Produced from 2005 to 2013)
 
-Each model includes data for sedans, coupes, convertibles, and other body types.
+Each model currently includes data for sedans only.
 
 ## Installation
 
@@ -52,6 +52,6 @@ To run the **BMW Data** app, you'll need Python 3.x installed. Then, follow the 
 Once the app is running, you can input the year, model type (E46 or E90), and a specific modification (e.g., 330i) to retrieve detailed information. Here's how it works:
 
 ```bash
-Enter model (E46/E90): E46
-Enter year (e.g., 2003): 2003
-Enter modification (e.g., 330i): 330i
+Select Generation (E46/E90): E46
+Select Year (e.g., 2003): 2003
+Select Modification (e.g., 330i): 330i
