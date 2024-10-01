@@ -1,5 +1,4 @@
 import sys
-
 from PyQt6.QtCore import QUrl, Qt
 from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QLabel, QWidget, QComboBox, QGridLayout
 from PyQt6.QtWebEngineWidgets import QWebEngineView
@@ -7,7 +6,6 @@ from PyQt6.QtGui import QIcon
 import plotly.figure_factory as ff
 import sqlite3
 import os
-import pandas as pd
 
 # Subclass QMainWindow to customize your application's main window
 class MainWindow(QMainWindow):
@@ -113,12 +111,10 @@ class MainWindow(QMainWindow):
         combo_year = self.year_box.currentText()
         combo_mod = self.mod_box.currentText()
         data = self.find_data(combo_gen, combo_year, combo_mod)
-        # Name and Year together
-        name_year = combo_gen + ", " + combo_year
 
         # Create table for car data
         # Source: https://plotly.com/python/table/
-        table_data = [[name_year, combo_mod],
+        table_data = [['Category', 'Value'],
               ['Model', '3 Series'],
               ['Generation', combo_gen],
               ['Modification', data[0]],
@@ -136,6 +132,10 @@ class MainWindow(QMainWindow):
         self.web_engine.setHtml(fig.to_html(include_plotlyjs='cdn'))
 
         self.clear_button.setEnabled(True)
+        self.gen_box.setEnabled(False)
+        self.year_box.setEnabled(False)
+        self.mod_box.setEnabled(False)
+        self.button.setEnabled(False)
 
     def find_data(self, gen, year, mod):
         # Connect to database
@@ -158,17 +158,12 @@ class MainWindow(QMainWindow):
 
     
     def on_gen_change(self):
-        # If the generation is E46 get all the years from the database for the E46
-        # Make them a set so that they do not repeat and add them to the year_box
-        # Else, select the years for the E90 and add them to the year_box
         if self.gen_box.currentText() == "E46":
-            # Clear the year_box
-            self.year_box.clear()
             # Connect to database
             basedir = os.path.abspath(os.path.dirname(__file__))
             conn = sqlite3.connect(os.path.join(basedir, 'bmw_data.db'))
             # Get a list of the values in the db
-            # Source: https://stackoverflow.com/questions/2854011/get-a-list-of-field-values-from-pythons-sqlite3-not-tuples-representing-rows 
+            # Source: https://stackoverflow.com/a/23115247/24109934 
             conn.row_factory = lambda cursor, row: row[0]
             cursor = conn.cursor()
             # Select all years from the E46 Table
@@ -182,13 +177,11 @@ class MainWindow(QMainWindow):
             self.year_box.setEnabled(True)
 
         else:
-            # Clear the year_box
-            self.year_box.clear()
             # Connect to database
             basedir = os.path.abspath(os.path.dirname(__file__))
             conn = sqlite3.connect(os.path.join(basedir, 'bmw_data.db'))
             # Get a list of the values in the db
-            # Source: https://stackoverflow.com/questions/2854011/get-a-list-of-field-values-from-pythons-sqlite3-not-tuples-representing-rows 
+            # Source: https://stackoverflow.com/a/23115247/24109934 
             conn.row_factory = lambda cursor, row: row[0]
             cursor = conn.cursor()
             # Select all years from the E90 Table
@@ -204,17 +197,13 @@ class MainWindow(QMainWindow):
     def on_year_change(self):
         if self.year_box.currentText() != "":
             # If the gen box is not empty, get the current generation
-            # Get the current generation 
             if self.gen_box.currentText() == "E46" or self.gen_box.currentText() == "E90":
                 generation = self.gen_box.currentText()
-                # For current year, get all the modifications from the database and add them to the mod_box
-                # Once a year is selected, enable the mod_box
-                # But if the year is not selected, disable the mod_box
                 # Connect to database
                 basedir = os.path.abspath(os.path.dirname(__file__))
                 conn = sqlite3.connect(os.path.join(basedir, 'bmw_data.db'))
-                # Get a list of the values in the db
-                # Source: https://stackoverflow.com/questions/2854011/get-a-list-of-field-values-from-pythons-sqlite3-not-tuples-representing-rows
+                # Get a list of the values in the database
+                # Source: https://stackoverflow.com/a/23115247/24109934 
                 conn.row_factory = lambda cursor, row: row[0]
                 cursor = conn.cursor()
                 # Select all modifications for the current year
@@ -228,7 +217,7 @@ class MainWindow(QMainWindow):
                 self.mod_box.setEnabled(True)
             # Else return nothing so that clear works properly
             # When the combo boxes are cleared in the clear method, the year_box and mod_box combo boxes are reset, 
-            # which may trigger the on_year_change method.
+            # which may trigger the on_year_change method, so we return nothing to avoid an error
             else:
                 return
         else:
@@ -260,8 +249,10 @@ class MainWindow(QMainWindow):
         self.year_box.setEnabled(False)
         self.mod_box.setEnabled(False)
 
-        # Load the initial.html file
-        self.loadPage()    
+        # Load the initial.html file and refresh the buttons
+        self.loadPage()
+        self.clear_button.setEnabled(False)
+        self.gen_box.setEnabled(True)    
 
 
 # Create the application instance
