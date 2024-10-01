@@ -136,6 +136,10 @@ class MainWindow(QMainWindow):
         self.web_engine.setHtml(fig.to_html(include_plotlyjs='cdn'))
 
         self.clear_button.setEnabled(True)
+        self.gen_box.setEnabled(False)
+        self.year_box.setEnabled(False)
+        self.mod_box.setEnabled(False)
+        self.button.setEnabled(False)
 
     def find_data(self, gen, year, mod):
         # Connect to database
@@ -204,7 +208,6 @@ class MainWindow(QMainWindow):
     def on_year_change(self):
         if self.year_box.currentText() != "":
             # If the gen box is not empty, get the current generation
-            # Get the current generation 
             if self.gen_box.currentText() == "E46" or self.gen_box.currentText() == "E90":
                 generation = self.gen_box.currentText()
                 # For current year, get all the modifications from the database and add them to the mod_box
@@ -261,7 +264,9 @@ class MainWindow(QMainWindow):
         self.mod_box.setEnabled(False)
 
         # Load the initial.html file
-        self.loadPage()    
+        self.loadPage()
+        self.clear_button.setEnabled(False)
+        self.gen_box.setEnabled(True)    
 
 
 # Create the application instance
