@@ -5,10 +5,10 @@
 ## Features
 
 - 📊 **Detailed Data**: Get access to crucial performance metrics and technical specifications of BMW 3 Series models (E46 and E90).
-  - Top Speed
-  - Fuel Type (Gasoline, Diesel, etc.)
+  - Top Speed (km/h)
+  - Fuel Type (Petrol/Diesel)
   - Horsepower (HP)
-  - Weight (kg/lbs)
+  - Weight (kg)
   - Acceleration (0-100 km/h)
   - And more...
   
